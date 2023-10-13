@@ -20,8 +20,8 @@ export default function Card({ status, imageUrl, alt, name, location }: Props) {
 
 	return (
 		<div>
-			<div className="relative mt-8 cursor-pointer rounded-md bg-zinc-800 shadow-2xl shadow-white/10 transition hover:scale-105">
-				<div className="absolute left-2 top-1 z-10 backdrop-blur-md flex items-center justify-center space-x-1 rounded-lg bg-zinc-800/70 p-1">
+			<div className="relative cursor-pointer rounded-md bg-zinc-800 shadow-2xl shadow-white/10 transition hover:scale-105">
+				<div className="absolute left-2 top-1 z-10 flex items-center justify-center space-x-1 rounded-lg bg-zinc-800/70 p-1 backdrop-blur-md">
 					<div
 						className={clsx('h-3 w-3 rounded-full', {
 							'bg-green-500': status === 'Alive',
