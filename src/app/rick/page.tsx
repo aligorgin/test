@@ -89,7 +89,12 @@ export default function Page() {
 					})}
 			</div>
 			<div className="mt-12 flex items-center justify-center">
-				<div className="cursor-pointer rounded-md border border-zinc-600 px-4 py-2 text-xl transition hover:-translate-y-1 active:scale-95">
+				<div
+					onClick={() => {
+						setPage((prev) => prev + 1);
+					}}
+					className="cursor-pointer rounded-md border border-zinc-600 px-4 py-2 text-xl transition hover:-translate-y-1 active:scale-95"
+				>
 					Load More
 				</div>
 			</div>
