@@ -49,7 +49,7 @@ export default function Page() {
 		).then((data) => {
 			setData(data);
 		});
-	}, []);
+	}, [page]);
 
 	console.log(data);
 
