@@ -2,6 +2,7 @@
 
 import clsx from 'clsx';
 import { useState } from 'react';
+import { z } from 'zod';
 
 export default function Page() {
 	const [values, setValues] = useState({
@@ -9,6 +10,11 @@ export default function Page() {
 		password: ''
 	});
 	const [res, setRes] = useState<any>(null);
+
+	const formData = z.object({
+		username: z.string().min(1).max(18),
+		password: z.string().min(1).max(18)
+	});
 
 	const requestOptions = {
 		method: 'POST',
