@@ -20,9 +20,14 @@ const queryData = async (query: string, variables: any) => {
 	}
 };
 export default function Page() {
-	const [data, setData] = useState<any>(null);
+	const [data, setData] = useState<any>([]);
 	const [page, setPage] = useState(1);
+	const [hasMore, setHasMore] = useState(true);
+
 	useEffect(() => {
+		if (!hasMore) {
+			return;
+		}
 		queryData(
 			`query getDatafromPageNumber($pageNumber: Int) {
 				characters(page: $pageNumber) {
@@ -46,14 +51,30 @@ export default function Page() {
 			{
 				pageNumber: page
 			}
-		).then((data) => {
-			setData(data);
+		).then((res) => {
+			const newResults = res.data.characters.results;
+			if (page === 1) {
+				setData(newResults);
+			} else {
+				setData((prevState: []) => [...prevState, ...newResults]);
+			}
+
+			if (res.data.characters.info.next === null) {
+				setHasMore(false);
+			}
 		});
-	}, [page]);
+	}, [page, hasMore]);
+
+	const handleClick = () => {
+		if (hasMore) {
+			setPage((prevPage) => prevPage + 1);
+		}
+	};
 
 	console.log(data);
+	console.log(page);
 
-	if (!data) {
+	if (data.length === 0) {
 		return (
 			<div className="mb-12">
 				<div className="mt-12 text-center text-4xl font-bold">
@@ -75,28 +96,29 @@ export default function Page() {
 			</div>
 			<div className="mt-8 grid grid-cols-1 gap-8 px-4 sm:grid-cols-2 sm:px-0">
 				{data &&
-					data.data.characters.results.map((result: any, index: number) => {
+					data.map((result: any, index: number) => {
 						return (
 							<Card
 								key={index}
-								alt={data.data.characters.results[index].name}
-								imageUrl={data.data.characters.results[index].image}
-								location={data.data.characters.results[index].location.name}
-								name={data.data.characters.results[index].name}
-								status={data.data.characters.results[index].status}
+								alt={result.name}
+								imageUrl={result.image}
+								location={result.location.name}
+								name={result.name}
+								status={result.status}
+								id={result.id}
 							/>
 						);
 					})}
 			</div>
 			<div className="mt-12 flex items-center justify-center">
-				<div
-					onClick={() => {
-						setPage((prev) => prev + 1);
-					}}
-					className="cursor-pointer rounded-md border border-zinc-600 px-4 py-2 text-xl transition hover:-translate-y-1 active:scale-95"
-				>
-					Load More
-				</div>
+				{hasMore && (
+					<div
+						onClick={handleClick}
+						className="cursor-pointer rounded-md border border-zinc-600 px-4 py-2 text-xl transition hover:-translate-y-1 active:scale-95"
+					>
+						Load More
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import Image from 'next/image';
 import { MapPinIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 interface Props {
 	status: string;
@@ -9,9 +10,10 @@ interface Props {
 	alt: string;
 	name: string;
 	location: string;
+	id: string;
 }
 
-export default function Card({ status, imageUrl, alt, name, location }: Props) {
+export default function Card({ status, imageUrl, alt, name, location, id }: Props) {
 	const [loaded, setLoaded] = useState<boolean>(true);
 
 	const handleImageLoad = () => {
@@ -19,7 +21,7 @@ export default function Card({ status, imageUrl, alt, name, location }: Props) {
 	};
 
 	return (
-		<div>
+		<Link href={`rick/characters/${id}`}>
 			<div className="relative cursor-pointer rounded-md bg-zinc-800 shadow-2xl shadow-white/10 transition hover:scale-105">
 				<div className="absolute left-2 top-1 z-10 flex items-center justify-center space-x-1 rounded-lg bg-zinc-800/70 p-1 backdrop-blur-md">
 					<div
@@ -51,6 +53,6 @@ export default function Card({ status, imageUrl, alt, name, location }: Props) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 }
